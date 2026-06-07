@@ -13,3 +13,7 @@ __pycache__/
 
 # Generated data
 data/pages.json
+
+vectorstore/index.faiss
+vectorstore/chunks.pkl
+vectorstore/metadata.pkl
