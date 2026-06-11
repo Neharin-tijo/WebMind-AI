@@ -1,5 +1,7 @@
 import streamlit as st
+
 from crawler import crawl_website
+from rag import answer_question
 
 # Page configuration
 st.set_page_config(
@@ -10,15 +12,17 @@ st.set_page_config(
 
 # Title
 st.title("🌐 WebMind AI")
-st.write("Enter a website URL and crawl its content.")
+st.write("Crawl a website and ask questions about its content using AI.")
 
-# Input URL
+# --------------------
+# Website Crawling
+# --------------------
+
 url = st.text_input(
     "Website URL",
     placeholder="https://example.com"
 )
 
-# Max pages option
 max_pages = st.slider(
     "Maximum Pages to Crawl",
     min_value=1,
@@ -26,7 +30,6 @@ max_pages = st.slider(
     value=10
 )
 
-# Crawl button
 if st.button("🚀 Crawl Website"):
 
     if not url:
@@ -54,6 +57,49 @@ if st.button("🚀 Crawl Website"):
                         if len(content) > 1000:
                             st.caption("Showing first 1000 characters")
 
+                st.warning(
+                    "After crawling a new website, run 'python embeddings.py' in the terminal to rebuild the vector database."
+                )
+
             except Exception as e:
                 st.error(f"Error: {str(e)}")
-                
+
+# --------------------
+# Chatbot Section
+# --------------------
+
+st.divider()
+
+st.header("💬 Ask Questions About the Website")
+
+question = st.text_input(
+    "Ask a Question",
+    placeholder="What services does this company provide?"
+)
+
+if st.button("Get Answer"):
+
+    if not question:
+        st.warning("Please enter a question.")
+    else:
+
+        try:
+
+            with st.spinner("Searching website knowledge base..."):
+
+                answer, sources = answer_question(question)
+
+                st.subheader("Answer")
+                st.write(answer)
+
+                st.subheader("Sources")
+
+                if sources:
+                    for source in sources:
+                        st.write(f"• {source}")
+                else:
+                    st.write("No sources found.")
+
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
+
