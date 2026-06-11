@@ -1,19 +1,20 @@
-# WebMind-AI
+# 🌐 WebMind-AI
 
-WebMind-AI is an AI-powered website chatbot that can ingest a website URL, recursively crawl relevant pages, and answer user questions using Retrieval-Augmented Generation (RAG). The system extracts, processes, indexes, and retrieves website content to provide accurate, context-aware responses.
+WebMind-AI is a Retrieval-Augmented Generation (RAG) based website chatbot that can ingest a website URL, recursively crawl pages, build a vector database from the extracted content, and answer user questions using AI.
 
 ## Features
 
-- Website URL ingestion
-- Recursive crawling of linked pages
-- Content extraction from HTML pages
-- Text chunking and preprocessing
-- Vector embeddings generation
-- Semantic search using vector database
-- Retrieval-Augmented Generation (RAG)
-- Natural language question answering
-- Fast and scalable architecture
-- Support for structured and unstructured web content
+* Website URL ingestion
+* Recursive web crawling
+* HTML content extraction
+* Text chunking and preprocessing
+* Vector embedding generation using Sentence Transformers
+* Semantic search using FAISS
+* AI-powered question answering with Google Gemini
+* Source URL references
+* Streamlit-based user interface
+
+---
 
 ## Architecture
 
@@ -30,70 +31,79 @@ Content Extraction
 Text Chunking
     │
     ▼
-Embedding Model
+Sentence Transformer
     │
     ▼
-Vector Database
+FAISS Vector Database
     │
     ▼
 Retriever
     │
     ▼
-LLM (RAG Pipeline)
+Gemini LLM
     │
     ▼
-Chatbot Response
+Answer + Sources
 ```
+
+---
 
 ## Tech Stack
 
 ### Frontend
-- React.js / Next.js
-- Tailwind CSS
+
+* Streamlit
 
 ### Backend
-- Python
-- FastAPI
+
+* Python
 
 ### AI & RAG
-- LangChain
-- OpenAI / Gemini API
-- Sentence Transformers
+
+* Google Gemini API
+* Sentence Transformers
 
 ### Vector Database
-- FAISS
-- ChromaDB
+
+* FAISS
 
 ### Web Scraping
-- BeautifulSoup
-- Requests
-- Selenium (optional)
+
+* BeautifulSoup
+* Requests
+
+### Data Processing
+
+* Pickle
+* NumPy
+
+---
 
 ## Project Structure
 
 ```text
 WebMind-AI/
 │
-├── frontend/
-│   ├── src/
-│   └── public/
-│
-├── backend/
-│   ├── crawler/
-│   ├── rag/
-│   ├── api/
-│   └── utils/
+├── app.py
+├── crawler.py
+├── rag.py
+├── embeddings.py
+├── build_vectorstore.py
+├── test_retrieval.py
+├── requirements.txt
+├── README.md
+├── .gitignore
 │
 ├── data/
+│   └── pages.json
 │
-├── vector_store/
-│
-├── requirements.txt
-│
-├── .env
-│
-└── README.md
+└── vectorstore/
+    ├── index.faiss
+    ├── index.pkl
+    └── metadata.pkl
 ```
+
+---
 
 ## Installation
 
@@ -106,21 +116,17 @@ cd WebMind-AI
 
 ### Create Virtual Environment
 
+Windows:
+
 ```bash
 python -m venv venv
-```
-
-Activate environment:
-
-Windows
-
-```bash
 venv\Scripts\activate
 ```
 
-Linux/Mac
+Linux / Mac:
 
 ```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -135,76 +141,80 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-OPENAI_API_KEY=your_api_key
 GEMINI_API_KEY=your_api_key
 ```
 
+---
+
 ## Running the Project
 
-### Backend
+Start the Streamlit application:
 
 ```bash
-uvicorn main:app --reload
+streamlit run app.py
 ```
 
-### Frontend
-
-```bash
-npm install
-npm run dev
-```
+---
 
 ## Usage
 
 1. Enter a website URL.
-2. WebMind-AI crawls the website.
-3. Content is extracted and indexed.
+2. Crawl the website.
+3. Generate embeddings and build the vector database.
 4. Ask questions about the website.
-5. Receive context-aware answers generated through RAG.
+5. Receive answers along with source URLs.
 
-### Example
+---
 
-Input URL:
+## Example
 
-```text
-https://example.com
-```
-
-Question:
+### Input URL
 
 ```text
-What services does this company provide?
+https://docs.streamlit.io
 ```
 
-Output:
+### Question
 
 ```text
-The company provides web development, cloud consulting, and AI solutions.
+What is Streamlit?
 ```
+
+### Output
+
+```text
+Streamlit is an open-source Python framework for data scientists and AI/ML engineers to deliver dynamic data apps with only a few lines of code.
+```
+
+---
 
 ## Future Enhancements
 
-- Multi-website knowledge base
-- PDF and document ingestion
-- Real-time website updates
-- Citation support
-- Authentication and user management
-- Conversation history
-- Hybrid search (keyword + semantic)
+* Multi-website support
+* Automatic vector database rebuilding
+* Chat history
+* PDF and document ingestion
+* Hybrid search
+* Citation support
 
-## Contributors
+---
 
-- Neharin Tijo
+## Author
+
+**Neharin Tijo**
+
+---
 
 ## License
 
 This project is licensed under the MIT License.
 
+---
+
 ## Acknowledgements
 
-- LangChain
-- OpenAI
-- Google Gemini
-- ChromaDB
-- FAISS
-- FastAPI
+* Google Gemini
+* Sentence Transformers
+* FAISS
+* BeautifulSoup
+* Streamlit
